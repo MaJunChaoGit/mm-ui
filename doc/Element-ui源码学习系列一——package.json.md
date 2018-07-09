@@ -1,6 +1,6 @@
-# Element-ui源码学习系列一—package.json
+# Element-ui源码学习系列一——package.json
 
-**在阅读源码前,过一遍package.json是非常有必要的..package.json描述了项目名称、版本号、所依赖的npm包以及生命周期等.**
+**在阅读源码前,过一遍package.json是非常有必要的.package.json描述了项目名称、版本号、所依赖的npm包以及生命周期等.**
 
 ### 1.依赖关系
 
@@ -140,29 +140,6 @@
 
 下面让我们来看看每条命令时做什么的,看完后也会对之后的学习方向有所清晰.
 
-```json
-"scripts": {
-    "bootstrap": "yarn || npm i",
-    "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js & node build/bin/version.js",
-    "build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk",
-    "build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js",
-    "build:umd": "node build/bin/build-locale.js",
-    "clean": "rimraf lib && rimraf packages/*/lib && rimraf test/**/coverage",
-    "deploy": "npm run deploy:build && gh-pages -d examples/element-ui --remote eleme && rimraf examples/element-ui",
-    "deploy:build": "npm run build:file && cross-env NODE_ENV=production webpack --config build/webpack.demo.js && echo element.eleme.io>>examples/element-ui/CNAME",
-    "dev": "npm run bootstrap && npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js",
-    "dev:play": "npm run build:file && cross-env NODE_ENV=development PLAY_ENV=true webpack-dev-server --config build/webpack.demo.js",
-    "dist": "npm run clean && npm run build:file && npm run lint && webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js && npm run build:utils && npm run build:umd && npm run build:theme",
-    "i18n": "node build/bin/i18n.js",
-    "lint": "eslint src/**/* test/**/* packages/**/* build/**/* --quiet",
-    "pub": "npm run bootstrap && sh build/git-release.sh && sh build/release.sh && node build/bin/gen-indices.js && sh build/deploy-faas.sh",
-    "test": "npm run lint && npm run build:theme && cross-env CI_ENV=/dev/ karma start test/unit/karma.conf.js --single-run",
-    "test:watch": "npm run build:theme && karma start test/unit/karma.conf.js"
-  }
-```
-
-整个scripts声明周期大致分为如下几个部分:
-
 **1.安装依赖**
 
 第一步,使用yran或者npm 安装项目依赖,当没有安装yran时会执行npm进行安装
@@ -183,6 +160,8 @@
 "build:umd": "node build/bin/build-locale.js"
 
 "clean": "rimraf lib && rimraf packages/*/lib && rimraf test/**/coverage"
+
+"dist": "npm run clean && npm run build:file && npm run lint && webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js && npm run build:utils && npm run build:umd && npm run build:theme",
 ```
 
 **3.开发模式**
