@@ -1,20 +1,14 @@
 <template>
   <div>
     <h1>{{ title }}</h1>
-    <vc-message :message="message"></vc-message>
   </div>
 </template>
 <script>
-  import child from './components/child.vue';
   export default {
     data() {
       return {
-        title: '标题',
-        message: '这是子组件'
+        title: '标题'
       };
-    },
-    components: {
-      'vc-message': child
     },
     mounted() {
       this.title = 'Hello World';
