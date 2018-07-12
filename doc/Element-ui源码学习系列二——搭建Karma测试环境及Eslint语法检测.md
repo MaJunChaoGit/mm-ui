@@ -493,4 +493,4 @@ describe('test app.vue', () => {
 
 #####总结
 
-完成所有配置之后执行`npm run test`将开始测试，当编译通过后可以访问http://127.0.0.1:9876/来查看测试情况，或者在`test => unit => coverage => icov-report =>index.html查看覆盖率报告`
+完成所有配置之后执行`npm run test`将开始测试，当编译通过后可以访问 http://127.0.0.1:9876 来查看测试情况，或者在`test => unit => coverage => icov-report =>index.html查看覆盖率报告`
