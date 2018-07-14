@@ -14,23 +14,13 @@ const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 const isPlay = !!process.env.PLAY_ENV;
 
-/**
- * 将unicode码转为汉子
- * @param  {[type]} str [description]
- * @return {[type]}     [description]
- */
 function convert(str) {
-  str = str.replace(/(&#x)(\w{4})/gi, function($0) {
+  str = str.replace(/(&#x)(\w{4});/gi, function($0) {
     return String.fromCharCode(parseInt(encodeURIComponent($0).replace(/(%26%23x)(\w{4})(%3B)/g, '$2'), 16));
   });
   return str;
 }
 
-/**
- * 添加高亮样式
- * @param  {[type]} render [description]
- * @return {[type]}        [description]
- */
 function wrap(render) {
   return function() {
     return render.apply(this, arguments)
@@ -40,19 +30,14 @@ function wrap(render) {
 }
 
 const webpackConfig = {
-  // 根据不同的环境变量，生成不同的入口文件
-  // 生产模式入口 =>  docs: './examples/entry.js', 'element-ui': './src/index.js'
-  // Play模式入口 => './example/play.js'
-  // 开发模式入口 => './example/entry.js'
   entry: isProd ? {
     docs: './examples/entry.js',
     'element-ui': './src/index.js'
-  } : (isPlay ? './example/play.js' : './example/entry.js'),
+  } : (isPlay ? './examples/play.js' : './examples/entry.js'),
   output: {
-    path: path.resolve(process.cwd(), './example/element-ui/'),
+    path: path.resolve(process.cwd(), './examples/element-ui/'),
     publicPath: process.env.CI_ENV || '',
     filename: '[name].[hash:7].js',
-    // 如果不是生产模式就不用hash了
     chunkFilename: isProd ? '[name].[hash:7].js' : '[name].js'
   },
   resolve: {
@@ -67,8 +52,6 @@ const webpackConfig = {
     noInfo: true
   },
   module: {
-    // pitching顺序post, inline, normal, pre
-    // transform顺序pre, normal, inline, post
     rules: [
       {
         enforce: 'pre',
@@ -89,31 +72,54 @@ const webpackConfig = {
         loader: 'babel-loader'
       },
       {
-        test: /.md$/,
+        test: /\.md$/,
         loader: 'vue-markdown-loader',
         options: {
           use: [
             [require('markdown-it-anchor'), {
               level: 2,
-              slugify: slugify, // 默认将汉字转为unicode,空格转为-
-              permalink: true, // 在标题旁永久添加链接
-              permalinkBefore: true // 在标题前添加链接
+              slugify: slugify,
+              permalink: true,
+              permalinkBefore: true
             }],
             [require('markdown-it-container'), 'demo', {
               validate: function(params) {
                 return params.trim().match(/^demo\s*(.*)$/);
               },
-              render: function(tokens idx) {
+
+              render: function(tokens, idx) {
                 var m = tokens[idx].info.trim().match(/^demo\s*(.*)$/);
                 if (tokens[idx].nesting === 1) {
                   var description = (m && m.length > 1) ? m[1] : '';
-                  var html = convert()
+                  var content = tokens[idx + 1].content;
+                  var html = convert(striptags.strip(content, ['script', 'style'])).replace(/(<[^>]*)=""(?=.*>)/g, '$1');
+                  var script = striptags.fetch(content, 'script');
+                  var style = striptags.fetch(content, 'style');
+                  var jsfiddle = { html: html, script: script, style: style };
+                  var descriptionHTML = description
+                    ? md.render(description)
+                    : '';
+
+                  jsfiddle = md.utils.escapeHtml(JSON.stringify(jsfiddle));
+
+                  return `<demo-block class="demo-box" :jsfiddle="${jsfiddle}">
+                            <div class="source" slot="source">${html}</div>
+                            ${descriptionHTML}
+                            <div class="highlight" slot="highlight">`;
                 }
+                return '</div></demo-block>\n';
               }
             }],
             [require('markdown-it-container'), 'tip'],
             [require('markdown-it-container'), 'warning']
-          ]
+          ],
+          preprocess: function(MarkdownIt, source) {
+            MarkdownIt.renderer.rules.table_open = function() {
+              return '<table class="table">';
+            };
+            MarkdownIt.renderer.rules.fence = wrap(MarkdownIt.renderer.rules.fence);
+            return source;
+          }
         }
       },
       {
@@ -158,10 +164,10 @@ const webpackConfig = {
     new HtmlWebpackPlugin({
       template: './examples/index.tpl',
       filename: './index.html',
-      favicon: './example/favicon.ico'
+      favicon: './examples/favicon.ico'
     }),
     new CopyWebpackPlugin([
-      { from: 'examples/version.json'}
+      { from: 'examples/versions.json' }
     ]),
     new ProgressBarPlugin(),
     new webpack.LoaderOptionsPlugin({
@@ -199,9 +205,9 @@ if (isProd) {
     }
   );
   webpackConfig.plugins.push(
-    new webpack.optmize.UglifyJsPlugin({
+    new webpack.optimize.UglifyJsPlugin({
       compress: {
-        wraning: false
+        warnings: false
       },
       output: {
         comments: false
@@ -219,11 +225,10 @@ if (isProd) {
     })
   );
 }
-
 if (isDev) {
   webpackConfig.module.rules.push(
     {
-      test: /.vue$/,
+      test: /\.vue$/,
       loader: 'vue-loader',
       options: {
         preserveWhitespace: false
@@ -231,7 +236,7 @@ if (isDev) {
     },
     {
       test: /\.css$/,
-      loader: ['style-loader', 'css-loader', 'postcss-loader']
+      loaders: ['style-loader', 'css-loader', 'postcss-loader']
     }
   );
   webpackConfig.plugins.push(

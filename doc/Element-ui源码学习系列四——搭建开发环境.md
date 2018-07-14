@@ -17,3 +17,8 @@ cheerio 服务器版jQuery
 striptags 利用cheerio实现两个方法,strip是去除标签以及内容，fetch是获取第一符合规则的标签的内容
 ```
 
+md解析
+
+入口文件
+
+./examples/entry.js
