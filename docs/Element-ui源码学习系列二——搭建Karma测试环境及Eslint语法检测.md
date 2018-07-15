@@ -123,7 +123,7 @@ rules文件我们就不分析了,所有的[语法规则都在这里](http://esli
 
 由于每个用的IDE各不相同,我只简单的介绍一下Sublime Text 3下的ESlint插件,如果需要配置细节可自行搜索。
 
-插件的话我常用的为`ESlint-Formatter`和`SublimeLinter`一个是提示,一个是修改。具体用法就不过多介绍了
+插件的话我常用的为`ESlint-Formatter`和`SublimeLinter`一个是修改,一个是提示。具体用法就不过多介绍了
 
 
 

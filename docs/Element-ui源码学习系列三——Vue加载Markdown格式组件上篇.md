@@ -1,8 +1,12 @@
-### Element-ui源码学习系列三——Vue加载Markdown格式组件(1)
+### Element-ui源码学习系列三——Vue加载Markdown格式组件上篇
+
+
 
 [TOC]
 
-#### 文档是如何工作的 -- [vue-markdown-loader](https://github.com/QingWei-Li/vue-markdown-loader)
+#### 序言
+
+**文档是如何工作的 --** [vue-markdown-loader ](https://github.com/QingWei-Li/vue-markdown-loader)
 
 > 当初写 [Mint UI](https://github.com/ElemeFE/mint-ui) 时就遇到了要用 Vue 写文档的问题：如何才能在写 Markdown 时也能写 Vue 组件的 Demo。虽然后来并没有在 Mint UI 的文档里写 Demo。最开始在 Element 的内部版本里，找遍了各种 Vue 的 Markdown 相关插件，要么是在 template 里定义 Markdown 格式，要么就是有一个 Markdown 的组件。都不能做到纯粹的写 Markdown 文件，并且还能写 Demo。
 >
@@ -12,9 +16,7 @@
 
 
 
-#### 前文
-
-**在写之前,我们再次整理下需求,只有理解了需求才可以生产出更好的代码!这也是本文中最重要的部分.**
+**在写之前,我们先整理下需求,只有理解了需求才可以生产出更好的代码!这也是本文中最重要的部分.**
 
 **我们的目的是做一个这样的教程网站. http://element.eleme.io/#/zh-CN/component/alert**
 
@@ -24,13 +26,17 @@
 
 **到这里时,看似没有啥毛病.但是别忘了我们要做的是教程网站. 光有代码可不行,我们还需要有效果呀!**
 
-**所以我们第二个需求就是在解析markdown中的代码块时,通过template调用组件库中的组件,让它可以在页面中加载!**
+**所以我们第二个需求就是在析markdown中也可以写Vue的组件!**
 
-**解决了这个问题,我们可以做到开发时,一遍编写文档,一遍开发组件,而不需要额外的工程,直接就可以教程网上调试.最后组件完成时,文档大致也完成的差不多了!**
-
-**真爽!**
+**解决了这个问题后,我们只要对设计好网页的模板,并通过路由调用不同的md文件就可以生成好一套教程网站了**
 
 
+
+----
+
+
+
+ 
 
 #### 安装vue-cli
 
@@ -70,10 +76,12 @@ striptags 利用cheerio实现两个方法,strip是去除标签以及内容，fet
 
 var cheerio = require('cheerio'); // 服务器版的jQuery
 
-// 在生成组件效果展示时,解析出的VUE组件有些是带<script>和<style>的,我们需要先将其剔除,之后使用
-// 第一个参数为HTML的字符串. 如: <template></template><script></script>
-// 第二个参数为需要剔除的标签名, 类型是数组或字符串. 如: 传入'script'或['script','style']
-// 以例子为参数的返回值为: <html><head><template></template></head><body></body></html>
+/**
+ * 在生成组件效果展示时,解析出的VUE组件有些是带<script>和<style>的,我们需要先将其剔除,之后使用
+ * @param  {[String]}       str   需要剔除的标签名 e.g'script'或['script','style']
+ * @param  {[Array|String]} tags  e.g '<template></template><script></script>''
+ * @return {[String]}             e.g '<html><head><template></template></head><body></body></html>'
+ */
 exports.strip = function(str, tags) {
   var $ = cheerio.load(str, {decodeEntities: false});
 
@@ -88,19 +96,21 @@ exports.strip = function(str, tags) {
     $(tags[len]).remove();
   }
 
-  return $.html(); // cheerio 转换后会将代码放回<head>中
+  return $.html(); // cheerio 转换后会将代码放入<head>中
 };
 
-// fetch方法接收两个参数
-// 第一个参数为HTML的字符串. 如: <html><body><h1>header</h1></body><script></script></html>
-// 第二个参数为需要获取的字符串
+/**
+ * 获取标签中的文本内容
+ * @param  {[String]} str e.g '<html><body><h1>header</h1></body><script></script></html>'
+ * @param  {[String]} tag e.g 'h1'
+ * @return {[String]}     e.g 'header'
+ */
 exports.fetch = function(str, tag) {
   var $ = cheerio.load(str, {decodeEntities: false});
   if (!tag) return str;
 
   return $(tag).html();
 };
-
 ```
 
 
@@ -115,7 +125,11 @@ const slugify = require('transliteration').slugify; // 引入transliteration中�
 
 const striptags = require('./strip-tags'); // 引入刚刚的工具类
 
-// 由于cheerio转换文字时会出现转为unicode的情况,所以我们编写convert方法来保证最终效果正确
+/**
+ * 由于cheerio在转换汉字时会出现转为Unicode的情况,所以我们编写convert方法来保证最终转码正确
+ * @param  {[String]} str e.g  &#x6210;&#x529F;
+ * @return {[String]}     e.g  成功
+ */
 function convert(str) {
   str = str.replace(/(&#x)(\w{4});/gi, function($0) {
     return String.fromCharCode(parseInt(encodeURIComponent($0).replace(/(%26%23x)(\w{4})(%3B)/g, '$2'), 16));
@@ -123,8 +137,12 @@ function convert(str) {
   return str;
 }
 
-// 由于v-pre会导致在加载时直接按内容生成页面.但是我们想要的是直接展示组件效果,通过正则进行替换
-// hljs是highlight.js中的高亮样式类名
+/**
+ * 由于v-pre会导致在加载时直接按内容生成页面.但是我们想要的是直接展示组件效果,通过正则进行替换
+ * hljs是highlight.js中的高亮样式类名
+ * @param  {[type]} render e.g '<code v-pre class="test"></code>' | '<code></code>'
+ * @return {[type]}        e.g '<code class="hljs test></code>'   | '<code class="hljs></code>'
+ */
 function wrap(render) {
   return function() {
     return render.apply(this, arguments)
@@ -211,7 +229,7 @@ function wrap(render) {
 
 #### 编写组件
 
-根目录下新建一个info.md文件测试
+根目录下新建一个info.md文件用以测试
 
 ```markdown
 //info.md
@@ -254,7 +272,7 @@ function wrap(render) {
   </div>
 </template>
 
-<script>
+<script type="text/babel">
 import info from '../../info.md'; // 导入md文件
 export default {
   name: 'HelloWorld',
@@ -300,13 +318,12 @@ export default {
     -webkit-font-smoothing: auto;
   }
 </style>
-
 ```
 
 
 
 #### 总结
 
-不得不说,一个好的开发架构可以为以为的开发省去太多的事情了.文章中不仅需要了解vue-markdown-loader的使用,更重要的是实现需求的思路!
+不得不说,一个好的开发架构可以为以为的开发省去太多的事情了.文章中vue-markdown-loader的使用固然重要,更重要的是实现需求的思路!
 
-至此为止,第一个需求算是解决的差不多了,还需要编写具体一些样式才能使用.而demo-block组件的解析会在下半部分做解析.
+至此为止,第一个需求算是解决的差不多了,还需要编写具体一些样式才能使用.关于demo-block组件的解析会在下半部分做解析.
