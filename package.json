@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "yran || npm i",
+    "build:file": "node build/bin/iconInit.js && node build/bin/build-entry.js",
     "dev": "npm run bootstrap",
     "lint": "eslint test/**/* packages/**/* --quiet",
     "test": "npm run lint && cross-env CI_ENV=/dev/ karma start test/unit/karma.conf.js --single-run",
