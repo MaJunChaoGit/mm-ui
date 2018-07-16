@@ -34,7 +34,7 @@ const install = function(Vue, opts = {}) {
 };
 
 /* istanbul ignore if */
-if (typeof window !== 'undefined' && window.Vue) {
+if (typeof window !== 'undefined' && window.Vue) { 
   install(window.Vue);
 }
 
