@@ -1,4 +1,74 @@
-# Element-ui源码学习系列一——package.json
+# Element-ui源码系列——初识框架
+
+
+
+[TOC]
+
+
+
+#### 序言
+
+现在前端的技术越来越杂,也越来越细了,以至于每次看完文档都会有个错觉,就是自己差不多会了.真正去做项目的时候又是重复之前的步骤.
+
+之前写Java的时候，会习惯性的看看源码，看完之后会对知识掌握的更牢靠，并且茅塞顿开的感觉简直妙不可言。再回想做前端的这段时间，确实时是自己浮躁了。
+
+我挑选了element做为学习目标的目的有二：
+
+​	1.element是一款Vue的UI框架,它可以将我的CSS,JavaScript,Vue知识糅合在一起。
+
+​	2.之前项目上实现的前端技术架构不太好,一直觉得自己眼界低了.希望通过学习可以将已有的架构重构,来让我们团队的兄弟可以工作的更舒服。
+
+文章会持续更新，感觉element团队,也感谢各位的阅读！
+
+
+
+#### 目录结构
+
+个人觉得,对于不同级别的程序猿来说,他们在读项目的文件结构时所得出的信息绝对是不一样的.
+
+一个项目中好的目录结构绝对是必不可少,下面我们先来看看element的[源码版](https://github.com/ElemeFE/element)和[发布版](https://www.npmjs.com/package/element-ui)的目录结构,以此入门
+
+```json
+// 源码开发包文件结构
+element
+	├──.github             	  // github的ISSUE等文件模板
+	├── build 	              // webpack编译配置文件等
+	├── examples              // 官方主页项目包
+	├── lib                   // 打包后文件目录
+	├── node_modules          // 模块依赖目录
+	├── packages              // 组件的源码目录
+		├── alert  		     // 具体组件源码包
+			├── src          // Vue组件包
+			├── index.js     // 入口文件
+	├── src 			     // 源码目录
+		├── directive         // 实现滚轮优化，鼠标点击优化
+		├── locale            // i18n国际化
+		├── mixins            // Vue混合器
+		├── transition        // 样式过渡效果
+		├── utils             // 工具类包
+		├── index.js          // 源码入口文件
+	├── test 	              // 测试目录
+		├── unit              // 单元测试目录
+			├── coverage      // 单元测试覆盖率包
+			├── specs         // 测试用例源码包
+			├── index.js      // 测试入口
+			├── karma.conf.js // karma配置文件
+			├── utils.js      // 工具类
+	├── types 	               // typescript文件包
+	├── .babelrc               // babel配置文件
+	├── .eslintignore          // eslint配置忽略文件
+	├── .eslintrc              // eslint配置
+	├── .gitignore             // git忽略文件
+	├── .travis.yml            // 持续构建配置
+	├── package.json
+
+	
+
+	├── package-lock.json
+
+```
+
+
 
 **在阅读源码前,过一遍package.json是非常有必要的.package.json描述了项目名称、版本号、所依赖的npm包以及生命周期等.**
 

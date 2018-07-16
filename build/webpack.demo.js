@@ -94,7 +94,7 @@ const webpackConfig = {
               permalinkBefore: true // 在标题前创建锚点
             }],
             // 'markdown-it-container'的作用是自定义代码块
-            
+
             [require('markdown-it-container'), 'demo', {
               // 当我们写::: demo :::这样的语法时才会进入自定义渲染方法
               validate: function(params) {

@@ -1,6 +1,6 @@
 # Element-ui源码学习系列二——搭建ESlint语法检测及Karma测试环境
 
-​	先介绍下背景,这件事发生在我们团队的开发过程中,这件事也是我们团队为什么要坚定不移使用Eslint的导火索.事情是这样,项目在稳定版本后进行分支继续开发,新人同事无意中将一个Web Worker文件里的半角`)`改成了圆角`）`,Webpack编译一直报错并无法定位到错误,只能一片一片代码去注释来定位错误,而修复这个问题他至少耽误了1个小时。
+​	先介绍下背景,这件事发生在我们团队的开发过程中,这件事也是我们团队为什么要坚定不移使用Eslint的导火索.事情是这样,项目在稳定版本后进行分支继续开发,新人同事无意中将之前的一个Web Worker文件里的半角`)`改成了圆角`）`,Webpack编译一直报错并无法定位到错误,只能一片一片代码去注释来定位错误,而修复这个问题他至少耽误了1个小时。
 
 ​	客观的来说,这虽然是他个人粗心的问题,但谁又能保证自己不犯错呢?但是,随着团队人员的加入,代码量的递增,那么维护的成本将会越来越高,这时候,语法检测和单元测试的引入绝对是开发过程中的一大助力。
 
@@ -37,7 +37,7 @@
       "sinon": true
 	},
 	"plugins": ["html", "json"], # 使用"eslint-plugin-html"和"eslint-plugin-json"两个插件
-	"extends": "elemefe", # 继承”eslint-config-elemefe“ 可以省略掉eslint-config-部分
+	"extends": "elemefe", # 继承”eslint-config-elemefe“的rules 可以省略掉eslint-config-部分
 	"rules": { 
 	  "no-restricted-globals": ["error", "event", "fdescribe"] # 禁用特定的全局变量
 	},
@@ -92,14 +92,14 @@ coverage
 const rules = require('./rules'); // 引用规则文件
 
 module.exports = { 
-  'root': true,  // 默认情况,ESlint会在所有父级目录里寻找配置文件,一直到根目录,一旦发现 'root': true 时就会停止在父类寻找
+  'root': true,  // ESlint会在所有父级目录里寻找配置文件,一直到根目录,一旦发现 'root': true 时就会停止在父类寻找
 
   'env': {
     'browser': true, // 浏览器环境中的全局变量
     'node': true, // Node.js 全局变量和 Node.js 作用域。
-    'amd': false, // 将 require() 和 define() 定义为像 amd 一样的全局变量
-    'mocha': false, // 添加所有的 Mocha 测试全局变量
-    'jasmine': false // 添加所有的 Jasmine 版本 1.3 和 2.0 的测试全局变量
+    'amd': false, // 禁止将 require() 和 define() 定义为像 amd 一样的全局变量
+    'mocha': false, // 禁止添加所有的 Mocha 测试全局变量
+    'jasmine': false // 禁止添加所有的 Jasmine 版本 1.3 和 2.0 的测试全局变量
   },
 
   'parserOptions': {
@@ -123,17 +123,17 @@ rules文件我们就不分析了,所有的[语法规则都在这里](http://esli
 
 由于每个用的IDE各不相同,我只简单的介绍一下Sublime Text 3下的ESlint插件,如果需要配置细节可自行搜索。
 
-插件的话我常用的为`ESlint-Formatter`和`SublimeLinter`一个是修改,一个是提示。具体用法就不过多介绍了
+插件的话我常用的为`ESlint-Formatter`和`SublimeLinter`一个是修改,一个是提示。具体配置在这里就不过多介绍了
 
 
 
 #####小结
 
-在完成以上配置后,当编写代码时出现定义的规则上的错误时,Sublime会有如下图一样的提示:
+在完成以上配置后,当编写代码时出现语法规则上的错误时,Sublime会有如下图一样的提示:
 
 ![1531376867800](C:\Users\ADMINI~1\AppData\Local\Temp\1531376867800.png)
 
-那么,只需要使用`ESlint-Formatter`的快捷键`ctrl+shift+h`修复即可,如果不修复的问题的可以对应[语法规则](http://eslint.cn/docs/rules/)一一修改,在熟练掌握之后,相信代码质量绝对能有显著的提高的。
+那么,只需要使用`ESlint-Formatter`的快捷键`ctrl+shift+h`修复即可,如果无法通过快捷键修复的问题的可以对应[语法规则](http://eslint.cn/docs/rules/)一一修改,在熟练掌握之后,相信代码质量绝对能有显著的提高的。
 
 
 

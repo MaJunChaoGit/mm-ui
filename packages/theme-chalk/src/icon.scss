@@ -1,9 +1,9 @@
-@import "common/var"
+@import "common/var";
 
 @font-face {
   font-family: 'element-icons';
   src: url('#{$--font-path}/element-icons.woff') format('woff'), /* chrome, firefox */
-       url('#{$--font-path}/element-icons.tff') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+       url('#{$--font-path}/element-icons.ttf') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
   font-weight: normal;
   font-style: normal
 }
@@ -176,11 +176,10 @@
   margin-right: 5px;
 }
 
-@key-frames rotating {
+@keyframes rotating {
   0% {
-    trasform: rotateZ(0deg);
+    transform: rotateZ(0deg);
   }
-
   100% {
     transform: rotateZ(360deg);
   }
