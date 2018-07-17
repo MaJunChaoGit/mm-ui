@@ -141,7 +141,7 @@ element-ui
 
 ##### <u>2</u>.依赖关系
 
-依赖关系可以让我们对大局上有些把握,至少让我们心里有点数,知道大概用了哪些技术,不然看ebp到各种require后反而会影响学习进度和思路.
+依赖关系可以让我们对大局上有些把握,至少让我们心里有点数,知道大概用了哪些技术,不然看到各种require之后一脸懵,反而会影响学习进度和思路.
 
 依赖关系还有一个重要的是版本信息,尤其是webpack这些构建工具的版本,格外注意!
 
@@ -276,12 +276,6 @@ element-ui
 ```json
 # 编译icon文件,编译源码入口文件,编译i18n文件,编译版本信息文件
 "build:file": "node build/bin/iconInit.js & node build/bin/build-entry.js & node build/bin/i18n.js & node build/bin/version.js"
-# SCSS生成CSS并创建入口文件
-"build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk"
-# 编译工具文件
-"build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js"
-# 编译umd风格国际化文件
-"build:umd": "node build/bin/build-locale.js"
 # 官网开发模式
 "dev": "npm run bootstrap && npm run build:file && cross-env NODE_ENV=development webpack-dev-server --config build/webpack.demo.js & node build/bin/template.js"
 # 组件开发模式
@@ -293,6 +287,12 @@ element-ui
 最后,部署发布同样也会单独提出一篇文章做介绍
 
 ```json
+# SCSS生成CSS并创建入口文件
+"build:theme": "node build/bin/gen-cssfile && gulp build --gulpfile packages/theme-chalk/gulpfile.js && cp-cli packages/theme-chalk/lib lib/theme-chalk"
+# 编译工具文件
+"build:utils": "cross-env BABEL_ENV=utils babel src --out-dir lib --ignore src/index.js"
+# 编译umd风格国际化文件
+"build:umd": "node build/bin/build-locale.js"
 # 打包生成最终文件
 "dist": "npm run clean && npm run build:file && npm run lint && webpack --config build/webpack.conf.js && webpack --config build/webpack.common.js && webpack --config build/webpack.component.js && npm run build:utils && npm run build:umd && npm run build:theme"
 # 清除生成的文件
