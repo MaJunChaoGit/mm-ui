@@ -169,7 +169,89 @@ module.exports = {
 
 #### 3.node build/bin/i18n.js
 
-**国际化用老土点的话说就是一套网页模板,里面的内容语言不同.恰好这个命令就是看这个事情的**
+**国际化用老土点的话说就是一套网页模板,里面的内容语言不同,选择不同的语言内容而已.而这个命令就是干这个事情的**
+
+(1).获取page.json文件,文件中主要存放了按照约定编写的三套网页内容
+
+```js
+// 获取json文件
+var langConfig = require('../../examples/i18n/page.json');
+```
+
+page.json文件格式如下,可以看到数据一个数组.每个数组存放了一种语言.pages字段下所代表的的是不同的页面.
+
+而1,2,3等序号就是我们需要根据不同语言所替换模板中的内容.
+
+```json
+[
+  {
+    "lang": "zh-CN",
+    "pages": {
+      "index": {
+        "1": "网站快速成型工具",
+        "2": "Element，一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的桌面端组件库",
+        "3": "指南",
+        "4": "了解设计指南，帮助产品设计人员搭建逻辑清晰、结构合理且高效易用的产品。",
+        "5": "查看详情",
+        "6": "组件",
+        "7": "使用组件 Demo 快速体验交互细节；使用前端框架封装的代码帮助工程师快速开发。",
+        "8": "资源",
+        "9": "下载相关资源，用其快速搭建页面原型或高保真视觉稿，提升产品设计效率。",
+        "lang": "zh-CN",
+        "titleSize": "34",
+        "paraSize": "18"
+      },
+      "component": {},
+      "changelog": {
+        "1": "更新日志",
+        "2": "zh-CN"
+      },
+      "design": {
+        "1": "设计原则",
+        "2": "一致",
+        ...
+      }
+     ...
+    }
+  ...
+},
+    ...
+]
+```
+
+(2).遍历文件,生成文件
+
+在了解json格式
+
+```json
+langConfig.forEach(lang => {
+  try {
+    // 判断目录是否存在
+    fs.statSync(path.resolve(__dirname, `../../examples/pages/${ lang.lang }`));
+  } catch (e) {
+    // 新建文件夹
+    fs.mkdirSync(path.resolve(__dirname, `../../examples/pages/${ lang.lang }`));
+  }
+  // 第二重循环
+  Object.keys(lang.pages).forEach(page => {
+    // 获取模板路径
+    var templatePath = path.resolve(__dirname, `../../examples/pages/template/${ page }.tpl`);
+    // 定义输出路径
+    var outputPath = path.resolve(__dirname, `../../examples/pages/${ lang.lang }/${ page }.vue`);
+    // 读取模板
+    var content = fs.readFileSync(templatePath, 'utf8');
+    // 获取内容对象
+    var pairs = lang.pages[page];
+    // 第三重循环
+    Object.keys(pairs).forEach(key => {
+      // 将内容,按照键进行替换
+      content = content.replace(new RegExp(`<%=\\s*${ key }\\s*>`, 'g'), pairs[key]);
+    });
+    // 重新写入文件
+    fs.writeFileSync(outputPath, content);
+  });
+});
+```
 
 
 
@@ -187,12 +269,13 @@ var content = { '1.4.13': '1.4', '2.0.11': '2.0', '2.1.0': '2.1', '2.2.2': '2.2'
 // 添加当前版本信息
 if (!content[version]) content[version] = '2.4';
 // 写入文件
-fs.writeFileSync(path.resolve(__dirname, '../../examples/versions.json'), JSON.stringify(content));
+fs.writeFileSync(path.resolve(__dirname, 
+                              '../../examples/versions.json'), JSON.stringify(content));
 
 // versions.json
 {"1.4.13":"1.4","2.0.11":"2.0","2.1.0":"2.1","2.2.2":"2.2","2.3.9":"2.3","2.4.3":"2.4"}
 
-// ../examples/components/header.vue
+// 调用文件../examples/components/header.vue
 created() {
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = _ => {
@@ -210,3 +293,10 @@ created() {
 }
 ```
 
+#### 总结
+
+感谢阅读!
+
+感觉element团队的贡献!
+
+如需跳转,请点
