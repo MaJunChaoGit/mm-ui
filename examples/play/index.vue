@@ -1,6 +1,6 @@
 <template>
   <div style="margin: 20px;">
-    <i class="el-icon-info"></i>
+    <el-button>我是测试按钮</el-button>
   </div>
 </template>
 <script>
