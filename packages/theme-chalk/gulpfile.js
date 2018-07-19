@@ -12,7 +12,7 @@ gulp.task('compile', function() {
       browsers: ['ie > 9', 'last 2 versions'],
       cascase: false
     }))
-    .pipe(cssmin())
+    // .pipe(cssmin())
     .pipe(gulp.dest('./lib'));
 });
 

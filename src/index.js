@@ -2,12 +2,14 @@
 
 import Icon from '../packages/icon/index.js';
 import Button from '../packages/button/index.js';
+import ButtonGroup from '../packages/button-group/index.js';
 // import locale from 'element-ui/src/locale';
 // import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
 const components = [
   Icon,
-  Button
+  Button,
+  ButtonGroup
   // CollapseTransition
 ];
 
@@ -48,7 +50,8 @@ module.exports = {
   // CollapseTransition,
   // Loading,
   Icon,
-  Button
+  Button,
+  ButtonGroup
 };
 
 module.exports.default = module.exports;
