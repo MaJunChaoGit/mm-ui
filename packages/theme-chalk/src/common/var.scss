@@ -20,8 +20,35 @@ $--color-warning: #e6a23c !default;
 $--color-danger: #f56c6c !default;
 $--color-info: #909399 !default;
 
+$--color-success-lighte: mix($--color-white, $--color-success, 80%) !default;
+$--color-info-lighte: mix($--color-white, $--color-warning, 80%) !default;
+$--color-warning-lighte: mix($--color-white, $--color-danger, 80%) !default;
+$--color-danger-lighte: mix($--color-white, $--color-info, 80%) !default;
+
+$--color-success-lighter: mix($--color-white, $--color-success, 90%) !default;
+$--color-info-lighter: mix($--color-white, $--color-warning, 90%) !default;
+$--color-warning-lighter: mix($--color-white, $--color-danger, 90%) !default;
+$--color-danger-lighter: mix($--color-white, $--color-info, 90%) !default;
+
 $--color-text-regular: #606266 !default;
 $--color-text-placeholder: #c0c4cc !default;
+/* Border
+ -------------------------- */
+$--border-radius-base: 4px !default;
+/* Alert
+ -------------------------- */
+$--alert-padding: 8px !default;
+$--alert-border-radius: $--border-radius-base !default;
+$--alert-success-color: $--color-success-lighter !default;
+$--alert-info-color: $--color-info-lighter !default;
+$--alert-warning-color: $--color-warning-lighter !default;
+$--alert-danger-color: $--color-danger-lighter !default;
+$--alert-icon-size: 16px !default;
+$--alert-icon-large-size: 28px !default;
+$--alert-description-font-size: 12px !default;
+$--alert-close-font-size: 12px !default;
+$--alert-title-font-size: 12px !default;
+$--alert-close-customed-font-size: 12px !default;
 /* Font 
 -------------------------- */
 $--font-path: 'fonts' !default;

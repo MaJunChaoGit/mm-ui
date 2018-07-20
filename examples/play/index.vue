@@ -3,6 +3,7 @@
     <el-alert
     title="成功提示的文案"
     type="success"
+    description="我是我是我是"
     show-icon>
   </el-alert>
   <el-alert

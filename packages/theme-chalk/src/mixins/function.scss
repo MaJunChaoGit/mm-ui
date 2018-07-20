@@ -11,7 +11,7 @@
 @function containsModifier($selector) {
   $selector: selectorToString($selector);
 
-  @if str-index($selector, $modify-separator) {
+  @if str-index($selector, $modifier-separator) {
     @return true;
   } @else {
     @return false;
@@ -31,7 +31,7 @@
 @function containPseudoClass($selector) {
   $selector: selectorToString($selector);
 
-  @if str-index($seletor, ':') {
+  @if str-index($selector, ':') {
     @return true
   } @else {
     @return false
