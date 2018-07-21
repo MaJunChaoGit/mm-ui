@@ -2,5 +2,6 @@
   "icon": "package/icon/index.js",
   "alert": "package/alert/index.js",
 	"button": "package/button/index.js",
-  "button-group" : "package/button-group/index.js"
+  "button-group" : "package/button-group/index.js",
+  "card" : "package/cardindex.js"
 }

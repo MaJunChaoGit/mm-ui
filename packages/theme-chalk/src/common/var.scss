@@ -30,6 +30,8 @@ $--color-info-lighter: mix($--color-white, $--color-warning, 90%) !default;
 $--color-warning-lighter: mix($--color-white, $--color-danger, 90%) !default;
 $--color-danger-lighter: mix($--color-white, $--color-info, 90%) !default;
 
+$--color-text-primary: #303133 !default;
+$--color-text-secondary: #909399 !default;
 $--color-text-regular: #606266 !default;
 $--color-text-placeholder: #c0c4cc !default;
 /* Border
@@ -62,7 +64,11 @@ $--border-color-base: #dcdfe6 !default;
 $--border-color-lighter: #ebeef5 !default;
 $--border-base: $--border-width-base $--border-style-base $--border-color-base !default;
 $--border-radius-base: 4px !default;
-
+/* Box-shadow
+ -------------------------- */
+$--box-shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04) !default;
+$--box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12) !default;
+$--box-shadow-light: 0 2px 12px rgba(0, 0, 0, .1) !default;
 /* Button
 -------------------------- */
 $--button-font-size: 14px !default;
@@ -116,3 +122,8 @@ $--button-info-fill: $--color-info !default;
 
 $--button-hover-tint-percent: 20% !default;
 $--button-active-shade-percent: 10% !default;
+/* Card
+ -------------------------- */
+$--card-border-color: $--border-color-lighter !default;
+$--card-border-radius: 4px !default;
+$--card-padding: 20px !default;

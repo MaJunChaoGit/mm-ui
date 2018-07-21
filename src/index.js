@@ -4,6 +4,7 @@ import Icon from '../packages/icon/index.js';
 import Alert from '../packages/alert/index.js';
 import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
+import Card from '../packages/card/index.js';
 // import locale from 'element-ui/src/locale';
 // import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -11,7 +12,8 @@ const components = [
   Icon,
   Alert,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Card
   // CollapseTransition
 ];
 
@@ -54,7 +56,8 @@ module.exports = {
   Icon,
   Alert,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Card
 };
 
 module.exports.default = module.exports;
