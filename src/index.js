@@ -6,15 +6,15 @@ import Button from '../packages/button/index.js';
 import ButtonGroup from '../packages/button-group/index.js';
 import Card from '../packages/card/index.js';
 // import locale from 'element-ui/src/locale';
-// import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
+import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
 const components = [
   Icon,
   Alert,
   Button,
   ButtonGroup,
-  Card
-  // CollapseTransition
+  Card,
+  CollapseTransition
 ];
 
 const install = function(Vue, opts = {}) {
@@ -51,7 +51,7 @@ module.exports = {
   // locale: locale.use,
   // i18n: locale.i18n,
   install,
-  // CollapseTransition,
+  CollapseTransition,
   // Loading,
   Icon,
   Alert,
