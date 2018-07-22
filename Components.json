@@ -3,5 +3,6 @@
   "alert": "packages/alert/index.js",
 	"button": "packages/button/index.js",
   "button-group" : "packages/button-group/index.js",
-  "card" : "packages/card/index.js"
+  "card" : "packages/card/index.js",
+  "radio" : "packages/radio/index.js"
 }
