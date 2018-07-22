@@ -2,6 +2,10 @@
   <label 
   role="radio" 
   class="el-radio"
+  :aria-checked="model===label"
+  :aria-disabled="isDisabled"
+  :tabindex="tabIndex"
+  @keydown.space.stop.prevent="model = isDisabled ? model : label"
   :class="[
     border && radioSize ? 'el-radio--' + radioSize : '',
     { 'is-disabled': isDisabled },
@@ -10,15 +14,25 @@
     { 'is-focus': focus }
   ]"
   >
-    <span class="el-radio__input">
+    <span class="el-radio__input"
+      :class="{
+        'is-disabled': isDisabled,
+        'is-checked': model === label
+      }"
+    >
       <span class="el-radio__inner"></span>
       <input 
       class="el-radio__original"
-      type="radio"
       :value="label"
+      type="radio"
+      aria-hidden="true"
+      v-model="model"
+      @focus="focus = true"
+      @blur="focus = false"
+      @change="handleChange"
       :name="name"
       :disabled="isDisabled"
-      v-model="model"
+      tabindex="-1"
       >
     </span>
     <span class="el-radio__label">
@@ -28,8 +42,11 @@
   </label>
 </template>
 <script>
+  import Emitter from 'element-ui/src/mixins/emitter';
   export default {
     name: 'ElRadio',
+
+    mixins: [Emitter],
 
     inject: {
       elForm: {
@@ -50,6 +67,12 @@
       name: String,
       border: Boolean,
       size: String
+    },
+
+    data() {
+      return {
+        focus: false
+      };
     },
 
     computed: {
@@ -77,12 +100,32 @@
           }
         }
       },
+      _elFormItemSize() {
+        return (this.elFormItem || {}).elFormItemSize;
+      },
+      radioSize() {
+        const temRadioSize = this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
+        return this.isGroup
+          ? this._radioGroup.radioGroupSize || temRadioSize
+          : temRadioSize;
+      },
       isDisabled() {
         return this.isGroup
           ? this._radioGroup.disabled || this.disabled || (this.elForm || {}).disabled
           : this.disabled || (this.elForm || {}).disabled;
+      },
+      tabIndex() {
+        return !this.disabled ? (this.isGroup ? (this.model === this.label ? 0 : -1) : 0) : -1;
+      }
+    },
+
+    methods: {
+      handleChange() {
+        this.$nextTick(() => {
+          this.$emit('change', this.model);
+          this.isGroup && this.dispatch('ElRadioGroup', 'handleChange', this.model);
+        });
       }
     }
-
   };
 </script>
