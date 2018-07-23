@@ -1,18 +1,18 @@
 <template>
-  <label 
-  role="radio" 
-  class="el-radio"
-  :aria-checked="model===label"
-  :aria-disabled="isDisabled"
-  :tabindex="tabIndex"
-  @keydown.space.stop.prevent="model = isDisabled ? model : label"
-  :class="[
-    border && radioSize ? 'el-radio--' + radioSize : '',
-    { 'is-disabled': isDisabled },
-    { 'is-bordered': border },
-    { 'is-checked': model === label },
-    { 'is-focus': focus }
-  ]"
+  <label
+    class="el-radio"
+    :class="[
+      border && radioSize ? 'el-radio--' + radioSize : '',
+      { 'is-disabled': isDisabled },
+      { 'is-focus': focus },
+      { 'is-bordered': border },
+      { 'is-checked': model === label }
+    ]"
+    role="radio"
+    :aria-checked="model === label"
+    :aria-disabled="isDisabled"
+    :tabindex="tabIndex"
+    @keydown.space.stop.prevent="model = isDisabled ? model : label"
   >
     <span class="el-radio__input"
       :class="{
@@ -21,28 +21,36 @@
       }"
     >
       <span class="el-radio__inner"></span>
-      <input 
-      class="el-radio__original"
-      :value="label"
-      type="radio"
-      aria-hidden="true"
-      v-model="model"
-      @focus="focus = true"
-      @blur="focus = false"
-      @change="handleChange"
-      :name="name"
-      :disabled="isDisabled"
-      tabindex="-1"
+      <input
+        class="el-radio__original"
+        :value="label"
+        type="radio"
+        aria-hidden="true"
+        v-model="model"
+        @focus="focus = true"
+        @blur="focus = false"
+        @change="handleChange"
+        :name="name"
+        :disabled="isDisabled"
+        tabindex="-1"
       >
     </span>
     <span class="el-radio__label">
       <slot></slot>
-      <template v-if="!$slots.default">{{ label }}</template>
+      <template v-if="!$slots.default">{{label}}</template>
     </span>
   </label>
 </template>
 <script>
+  /**
+   * 1.props传入label,该label与v-model传入的value比对生成is-checked
+   * 2.props传入disabled,生成is-disabled
+   * 3.props传入border,生成is-bordered
+   * 4.props传入size,仅在border为true时生成.el-radio--medium格式样式
+   * 5.props传入name,为input的原生属性
+   */
   import Emitter from 'element-ui/src/mixins/emitter';
+
   export default {
     name: 'ElRadio',
 
@@ -74,7 +82,6 @@
         focus: false
       };
     },
-
     computed: {
       isGroup() {
         let parent = this.$parent;
@@ -115,7 +122,7 @@
           : this.disabled || (this.elForm || {}).disabled;
       },
       tabIndex() {
-        return !this.disabled ? (this.isGroup ? (this.model === this.label ? 0 : -1) : 0) : -1;
+        return !this.isDisabled ? (this.isGroup ? (this.model === this.label ? 0 : -1) : 0) : -1;
       }
     },
 

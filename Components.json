@@ -4,5 +4,7 @@
 	"button": "packages/button/index.js",
   "button-group" : "packages/button-group/index.js",
   "card" : "packages/card/index.js",
-  "radio" : "packages/radio/index.js"
+  "radio" : "packages/radio/index.js",
+  "radio-button" : "packages/radio-button/index.js",
+  "radio-group" : "packages/radio-group/index.js"
 }
