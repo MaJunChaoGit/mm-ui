@@ -56,3 +56,35 @@ exports.createTest = function(Compo, propsData = {}, mounted = false) {
   const Ctor = Vue.extend(Compo);
   return new Ctor({ propsData }).$mount(mounted === false ? null : elm);
 };
+
+exports.triggerEvent = function(elm, name, ...opts) {
+  let eventName;
+
+  if (/^mouse|click/.test(name)) {
+    eventName = 'MouseEvents';
+  } else if (/^key/.test(name)) {
+    eventName = 'KeyboardEvent';
+  } else {
+    eventName = 'HTMLEvents';
+  }
+  const evt = document.createEvent(eventName);
+
+  evt.initEvent(name, ...opts);
+  elm.dispatchEvent
+    ? elm.dispatchEvent(evt)
+    : elm.fireEvent('on' + name, evt);
+
+  return elm;
+};
+
+/**
+ * 触发 keydown 事件
+ * @param {Element} elm
+ * @param {keyCode} int
+ */
+exports.triggerKeyDown = function(el, keyCode) {
+  const evt = document.createEvent('Events');
+  evt.initEvent('keydown', true, true);
+  evt.keyCode = keyCode;
+  el.dispatchEvent(evt);
+};
