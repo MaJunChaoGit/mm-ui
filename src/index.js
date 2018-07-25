@@ -8,6 +8,9 @@ import Card from '../packages/card/index.js';
 import Radio from '../packages/radio/index.js';
 import RadioButton from '../packages/radio-button/index.js';
 import RadioGroup from '../packages/radio-group/index.js';
+import Checkbox from '../packages/checkbox/index.js';
+import CheckboxButton from '../packages/checkbox-button/index.js';
+import CheckboxGroup from '../packages/checkbox-group/index.js';
 // import locale from 'element-ui/src/locale';
 import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -20,6 +23,9 @@ const components = [
   Radio,
   RadioButton,
   RadioGroup,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,
   CollapseTransition
 ];
 
@@ -66,7 +72,10 @@ module.exports = {
   Card,
   Radio,
   RadioButton,
-  RadioGroup
+  RadioGroup,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup
 };
 
 module.exports.default = module.exports;

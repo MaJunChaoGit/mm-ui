@@ -6,5 +6,8 @@
   "card" : "packages/card/index.js",
   "radio" : "packages/radio/index.js",
   "radio-button" : "packages/radio-button/index.js",
-  "radio-group" : "packages/radio-group/index.js"
+  "radio-group" : "packages/radio-group/index.js",
+  "checkbox" : "packages/checkbox/index.js",
+  "checkbox-button" : "packages/checkbox-button/index.js",
+  "checkbox-group" : "packages/checkbox-group/index.js"
 }
