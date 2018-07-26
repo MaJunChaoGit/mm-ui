@@ -40,7 +40,6 @@
 
     watch: {
       value(value) {
-        console.log(value);
         this.dispatch('ElFormItem', 'el.form.change', [value]);
       }
     }
