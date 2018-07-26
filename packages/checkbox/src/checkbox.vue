@@ -2,14 +2,16 @@
   <label
     class="el-checkbox"
     :class="[
+
       { 'is-disabled' : isDisabled }
     ]"
     role="checkbox"
   >
     <span class="el-checkbox__input"
-      :class="[
-        { 'is-disabled' : isDisabled }
-      ]"
+      :class="{
+       'is-disabled' : isDisabled,
+       'is-indeterminate': indeterminate
+      }"
     >
       <span class="el-checkbox__inner"></span>
       <input 
@@ -17,9 +19,10 @@
         type="checkbox"
         v-model="model"
         :disabled="isDisabled"
+        :value="label"
       >
     </span>
-    <span class="el-checkbox__label">
+    <span class="el-checkbox__label" v-if="$slots.default || label">
       <slot></slot>
       <template v-if="!$slots.default">{{label}}</template>
     </span>
@@ -45,7 +48,10 @@
 
     props: {
       value: {},
-      disabled: Boolean
+      label: {},
+      indeterminate: Boolean,
+      disabled: Boolean,
+      checked: Boolean
     },
 
     componentName: 'ElCheckbox',
@@ -70,7 +76,7 @@
         },
         set(val) {
           if (this.isGroup) {
-            this.dispatch('ElCheckboxGroup', 'handleChange', [val]);
+            this.dispatch('ElCheckboxGroup', 'input', [val]);
           } else {
             this.$emit('input', val);
           }
