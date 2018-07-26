@@ -1,8 +1,3 @@
-<template>
-  <div class="el-checkbox-group" role="group" aria-label="checkbox-group">
-    <slot></slot>
-  </div>
-</template>
 <script>
   import Emitter from 'element-ui/src/mixins/emitter';
 
@@ -22,7 +17,7 @@
     props: {
       value: {},
       disabled: Boolean,
-      mix: Number,
+      min: Number,
       max: Number,
       size: String,
       fill: String,
@@ -45,3 +40,9 @@
     }
   };
 </script>
+
+<template>
+  <div class="el-checkbox-group" role="group" aria-label="checkbox-group">
+    <slot></slot>
+  </div>
+</template>
