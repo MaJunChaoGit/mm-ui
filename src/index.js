@@ -11,6 +11,7 @@ import RadioGroup from '../packages/radio-group/index.js';
 import Checkbox from '../packages/checkbox/index.js';
 import CheckboxButton from '../packages/checkbox-button/index.js';
 import CheckboxGroup from '../packages/checkbox-group/index.js';
+import Input from '../packages/input/index.js';
 // import locale from 'element-ui/src/locale';
 import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -26,6 +27,7 @@ const components = [
   Checkbox,
   CheckboxButton,
   CheckboxGroup,
+  Input,
   CollapseTransition
 ];
 
@@ -75,7 +77,8 @@ module.exports = {
   RadioGroup,
   Checkbox,
   CheckboxButton,
-  CheckboxGroup
+  CheckboxGroup,
+  Input
 };
 
 module.exports.default = module.exports;
