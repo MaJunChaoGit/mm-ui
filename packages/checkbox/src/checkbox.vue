@@ -4,7 +4,7 @@
     :class="[
       border && checkboxSize ? 'el-checkbox--' + checkboxSize : '',
       { 'is-disabled' : isDisabled },
-      { 'is-border': border },
+      { 'is-bordered': border },
       { 'is-checked': isChecked }
     ]"
     role="checkbox"
