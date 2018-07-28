@@ -7,11 +7,17 @@
   4.type值可以设置为textarea -->
 
 
-  <div
-    class="el-input"
-    :class="[
-      size ? 'el-input--' + inputSize : '',
-      { 'is-disabled' : inputDisabled }
+  <div :class="[
+    type === 'textarea' ? 'el-textarea' : 'el-input',
+    inputSize ? 'el-input--' + inputSize : '',
+    { 
+      'is-disabled' : inputDisabled,
+      'el-input-group': $slots.prepend || $slots.append,
+      'el-input-group--prepend': $slots.prepend,
+      'el-input-group--append': $slots.append,
+      'el-input--prefix': $slots.prefix || prefixIcon,
+      'el-input--suffix': $slots.suffix || suffixIcon || clearable
+    }
     ]"
     @mouseenter="hovering = true"
     @mouseleave="hovering = false"
@@ -23,6 +29,7 @@
       </div>
       <input
         :tableindex="tabindex"
+        v-if="type !== 'textarea'"
         class="el-input__inner"
         v-bind="$attrs"
         :type="type"
@@ -30,6 +37,9 @@
         :autocomplete="autoComplete"
         :value="currentValue"
         ref="input"
+        @compositionstart="handleComposition"
+        @compositionupdate="handleComposition"
+        @compositionend="handleComposition"
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"
@@ -72,10 +82,13 @@
     <textarea
       v-else
       :tableindex="tableindex"
-      class="el-input__inner"
+      class="el-textarea__inner"
+      :value="currentValue"
+      @compositionstart="handleComposition"
+      @compositionupdate="handleComposition"
+      @compositionend="handleComposition"
       @input="handleInput"
       ref="textarea"
-      :value="currentValue"
       v-bind="$attrs"
       :disabled="inputDisabled"
       @change="handleChange"
@@ -86,10 +99,14 @@
   </div>
 </template>
 <script>
+  import Emitter from 'element-ui/src/mixins/emitter';
+  import { isKorean } from 'element-ui/src/utils/shared';
   export default {
     name: 'ElInput',
 
     componentName: 'ElInput',
+
+    mixins: [Emitter],
 
     inject: {
       elForm: {
@@ -107,7 +124,9 @@
           ? ''
           : this.value,
         focused: false,
-        hovering: false
+        hovering: false,
+        isOnComposition: false,
+        valueBeforeComposition: null
       };
     },
 
@@ -178,7 +197,31 @@
         (this.$refs.input || this.$refs.textarea).focus();
       },
       setCurrentValue(val) {
+        if (this.isOnComposition && val === this.valueBeforeComposition) return;
         this.currentValue = val;
+        if (this.isOnComposition) return;
+        this.$nextTick(_ => {
+          this.resizeTextarea();
+        });
+        if (this.validateEvent) {
+          this.dispatch('ElFormItem', 'el.form.change', [val]);
+        }
+      },
+      handleComposition(event) {
+        if (event.type === 'compositionend') {
+          this.isOnComposition = false;
+          this.currentValue = this.valueBeforeComposition;
+          this.valueBeforeComposition = null;
+          this.handleInput(event);
+        } else {
+          const text = event.target.value;
+          const lastCharacter = text[text.length - 1] || '';
+          this.isOnComposition = !isKorean(lastCharacter);
+
+          if (this.isOnComposition && event.type === 'compositionstart') {
+            this.valueBeforeComposition = text;
+          }
+        }
       }
     },
     watch: {
