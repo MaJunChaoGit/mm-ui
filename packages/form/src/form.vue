@@ -43,6 +43,13 @@
         default: true
       }
     },
+    watch: {
+      rules() {
+        if (this.validateOnRuleChange) {
+          this.validate(() => {});
+        }
+      }
+    },
     data() {
       return {
         fields: []
@@ -69,6 +76,14 @@
         }
         this.fields.forEach(field => {
           field.resetField();
+        });
+      },
+      clearValidate(props =[]) {
+        const fields = props.length
+          ? this.fields.filter(field => props.indexOf(field.prop) > -1)
+          : this.fields;
+        fields.forEach(field => {
+          field.clearValidate();
         });
       },
       validate(callback) {
@@ -110,6 +125,12 @@
         if (promise) {
           return promise;
         }
+      },
+      validateField(prop, cb) {
+        let field = this.fields.filter(field => field.prop === prop)[0];
+        if (!field) { throw new new Error('must call validateField with valid prop string'); }
+
+        field.validate('', cb);
       }
     }
   }
