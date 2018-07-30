@@ -1,7 +1,7 @@
 <template>
   <form class="el-form" :class="[
     labelPosition ? 'el-form--label-' + labelPosition : '',
-    { 'el-form-inline': inline }
+    { 'el-form--inline': inline }
   ]">
     <slot></slot>
   </form>
@@ -14,10 +14,10 @@
 
     componentName: 'ElForm',
 
-    privide() {
+    provide() {
       return {
         elForm: this
-      }
+      };
     },
 
     props: {
@@ -58,9 +58,10 @@
     created() {
       this.$on('el.form.addField', (field) => {
         if (field) {
-          this.fields.push(filed);
+          this.fields.push(field);
         }
       });
+      /* istanbul ignore next */
       this.$on('el.form.removeField', (field) => {
         if (field.prop) {
           this.fields.splice(this.fields.indexOf(field), 1);
@@ -78,7 +79,7 @@
           field.resetField();
         });
       },
-      clearValidate(props =[]) {
+      clearValidate(props = []) {
         const fields = props.length
           ? this.fields.filter(field => props.indexOf(field.prop) > -1)
           : this.fields;
@@ -104,11 +105,10 @@
 
         let valid = true;
         let count = 0;
-        // 如果需要验证的fields为空, 调用验证时立刻返回callback
+        // 如果需要验证的fields为空，调用验证时立刻返回callback
         if (this.fields.length === 0 && callback) {
           callback(true);
         }
-
         let invalidFields = {};
         this.fields.forEach(field => {
           field.validate('', (message, field) => {
@@ -128,10 +128,10 @@
       },
       validateField(prop, cb) {
         let field = this.fields.filter(field => field.prop === prop)[0];
-        if (!field) { throw new new Error('must call validateField with valid prop string'); }
+        if (!field) { throw new Error('must call validateField with valid prop string!'); }
 
         field.validate('', cb);
       }
     }
-  }
+  };
 </script>
