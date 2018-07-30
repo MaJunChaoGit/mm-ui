@@ -88,6 +88,20 @@
         this.dispath('ElForm', 'el.form.addField', [this]);
 
         let initialValue = this.fieldValue;
+
+        if(Array.isArray(initialValue)) {
+          initialValue = [].concat(initialValue);
+        }
+        Object.defineProperty(this, 'initialValue', {
+          value: initialValue
+        });
+
+        let rules = this.getRules();
+
+        if (rules.length || this.required !== undefined) {
+          this.$on('el.form.blur', this.onFieldBlur);
+          this.$on('el.form.change', this.onFieldChange);
+        }
       }
     },
 
@@ -105,6 +119,18 @@
 
           return getPropByPath(model, path, true).v;
         }
+      }
+    },
+    methods: {
+      getRules() {
+        let formRules = this.form.rules;
+        const selfRules = this.rules;
+        const requiredRules = this.required !== undefined ? { required: !!this.required } : [];
+
+        const prop = getPropByPath(formRules, this.prop || '');
+        formRules = formRules ? (prop.o[this.prop || ''] || prop.v) : [];
+
+        return [].concat(selfRules || formRules || []).concat(requiredRules);
       }
     }
   }
