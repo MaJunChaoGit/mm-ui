@@ -10,5 +10,7 @@
   "checkbox" : "packages/checkbox/index.js",
   "checkbox-button" : "packages/checkbox-button/index.js",
   "checkbox-group" : "packages/checkbox-group/index.js",
-  "input": "packages/input/index.js"
+  "input": "packages/input/index.js",
+  "form": "packages/form/index.js",
+  "form-item": "packages/form-item/index.js"
 }

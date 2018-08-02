@@ -12,6 +12,8 @@ import Checkbox from '../packages/checkbox/index.js';
 import CheckboxButton from '../packages/checkbox-button/index.js';
 import CheckboxGroup from '../packages/checkbox-group/index.js';
 import Input from '../packages/input/index.js';
+import Form from '../packages/form/index.js';
+import FormItem from '../packages/form-item/index.js';
 // import locale from 'element-ui/src/locale';
 import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -28,6 +30,8 @@ const components = [
   CheckboxButton,
   CheckboxGroup,
   Input,
+  Form,
+  FormItem,
   CollapseTransition
 ];
 
@@ -78,7 +82,9 @@ module.exports = {
   Checkbox,
   CheckboxButton,
   CheckboxGroup,
-  Input
+  Input,
+  Form,
+  FormItem
 };
 
 module.exports.default = module.exports;

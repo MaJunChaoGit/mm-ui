@@ -22,23 +22,23 @@
     },
 
     props: {
-      model: Object,          // 表单内数据模型
-      rules: Object,          // 表单验证规则
-      labelPosition: String,  // 表单中label的定位
-      labelWidth: String,     // 表单中label块的宽度
-      labelSuffix: {          // label的后缀
+      model: Object, // 表单内数据模型
+      rules: Object, // 表单验证规则
+      labelPosition: String, // 表单中label的定位
+      labelWidth: String, // 表单中label块的宽度
+      labelSuffix: { // label的后缀
         type: String,
         default: ''
       },
-      inline: Boolean,        // 是否行内显示表单元素
+      inline: Boolean, // 是否行内显示表单元素
       inlineMessage: Boolean, // 行内显示验证信息
-      statusIcon: Boolean,    // 是否显示验证小图标
-      showMessage: {          // 显示验证信息
+      statusIcon: Boolean, // 是否显示验证小图标
+      showMessage: { // 显示验证信息
         type: Boolean,
         default: true
       },
-      size: String,           // 表单中元素的尺寸
-      disabled: Boolean,      // 是否禁用表单元素
+      size: String, // 表单中元素的尺寸
+      disabled: Boolean, // 是否禁用表单元素
       validateOnRuleChange: { // rules改变直接触发表单验证
         type: Boolean,
         default: true
@@ -57,7 +57,7 @@
       };
     },
     created() {
-      // 监听'el.form.addField 
+      // 监听'el.form.addField
       // 当触发该事件时, 为fields数组增加字段
       /* istanbul ignore next */
       this.$on('el.form.addField', (field) => {
@@ -65,7 +65,7 @@
           this.fields.push(field);
         }
       });
-      // 监听'el.form.addField 
+      // 监听'el.form.addField
       // 当触发该事件时, 为fields数组移除字段
       /* istanbul ignore next */
       this.$on('el.form.removeField', (field) => {

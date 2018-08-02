@@ -267,6 +267,7 @@
         return [].concat(selfRules || formRules || []).concat(requiredRule);
       },
       getFilteredRule(trigger) {
+        const rules = this.getRules();
         // 根据传入的trigger再次筛选出没有trigger的规则 以及符合参数trigger的rules
         return rules.filter(rule => {
           // 如果没有规则,或者没有传入trigger参数时
