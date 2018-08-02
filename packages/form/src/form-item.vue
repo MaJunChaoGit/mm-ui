@@ -77,6 +77,7 @@
       size: String
     },
     watch: {
+      // 设置该值会让验证直接错误, 并显示出错误信息
       error: {
         immediate: true,
         handler(value) {
@@ -89,9 +90,11 @@
       }
     },
     computed: {
+      // label的for属性
       labelFor() {
         return this.for || this.prop;
       },
+      // label的宽度样式控制
       labelStyle() {
         const ret = {};
         if (this.form.labelPosition === 'top') return ret;
@@ -101,6 +104,7 @@
         }
         return ret;
       },
+      // 具体内容margin-left控制
       contentStyle() {
         const ret = {};
         const label = this.label;
@@ -145,6 +149,7 @@
         }
       },
       isRequired() {
+        // 判断规则中是否定义required
         let rules = this.getRules();
         let isRequired = false;
 
@@ -180,41 +185,52 @@
     },
     methods: {
       validate(trigger, callback = noop) {
+        // 验证禁止关闭
         this.validateDisabled = false;
+        // 获取符合trigger的规则
         const rules = this.getFilteredRule(trigger);
+        // 如果没有定义规则并且没有定义必须填写
         if ((!rules || rules.length === 0) && this.required === undefined) {
+          // 立即执行回调
           callback();
           return true;
         }
-
+        // 改变验证状态为正在验证
         this.validateState = 'validating';
 
         const descriptor = {};
+
         if (rules && rules.length > 0) {
           rules.forEach(rule => {
             delete rule.trigger;
           });
         }
+        // 生产处AsyncValidator需要的验证规则格式
         descriptor[this.prop] = rules;
 
         const validator = new AsyncValidator(descriptor);
         const model = {};
-
+        // 生产处AsyncValidator需要的验证数据
         model[this.prop] = this.fieldValue;
-
+        // firstField是指当验证规则时发生错误 不再继续向下进行验证
         validator.validate(model, { firstFields: true }, (errors, invalidFields) => {
+          // 验证状态
           this.validateState = !errors ? 'success' : 'error';
+          // 验证信息
           this.validateMessage = errors ? errors[0].message : '';
-
+          // 执行回调函数
           callback(this.validateMessage, invalidFields);
+          // 提交validate事件
           this.elForm && this.elForm.$emit('validate', this.prop, !errors);
         });
       },
+      // 清除所有当前验证状态
       clearValidate() {
         this.validateState = '';
         this.validateMessage = '';
         this.validateDisabled = false;
       },
+      // 重置所有字段为初始值
       resetField() {
         this.validateState = '';
         this.validateMessage = '';
@@ -246,15 +262,14 @@
         const requiredRule = this.required !== undefined ? { required: !!this.required } : [];
         // 获取总规则列表中具体该组件需要验证的具体规则
         const prop = getPropByPath(formRules, this.prop || '');
-
         formRules = formRules ? (prop.o[this.prop || ''] || prop.v) : [];
         // 以自己定义的规则为优先与required规则合并
         return [].concat(selfRules || formRules || []).concat(requiredRule);
       },
       getFilteredRule(trigger) {
-        const rules = this.getRules();
-
+        // 根据传入的trigger再次筛选出没有trigger的规则 以及符合参数trigger的rules
         return rules.filter(rule => {
+          // 如果没有规则,或者没有传入trigger参数时
           if (!rule.trigger || trigger === '') return true;
           if (Array.isArray(rule.trigger)) {
             return rule.trigger.indexOf(trigger) > -1;
@@ -310,3 +325,4 @@
     }
   };
 </script>
+
