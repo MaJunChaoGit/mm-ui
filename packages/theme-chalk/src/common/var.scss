@@ -262,5 +262,17 @@ $--radio-button-checked-color: $--color-white !default;
 $--radio-button-checked-border-color: $--color-primary !default;
 $--radio-button-disabled-checked-fill: $--border-color-extra-light !default;
 
+/* Break-point
+-------------------------- */
+$--sm: 768px !default;
+$--md: 992px !default;
+$--lg: 1200px !default;
+$--xl: 1920px !default;
 
-
+$--breakpoints: (
+  'xs' : (max-width: $--sm),
+  'sm' : (min-width: $--sm),
+  'md' : (min-width: $--md),
+  'lg' : (min-width: $--lg),
+  'xl' : (min-width: $--xl)
+);

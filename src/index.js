@@ -15,6 +15,7 @@ import Input from '../packages/input/index.js';
 import Form from '../packages/form/index.js';
 import FormItem from '../packages/form-item/index.js';
 import Row from '../packages/row/index.js';
+import Col from '../packages/col/index.js';
 // import locale from 'element-ui/src/locale';
 import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -34,6 +35,7 @@ const components = [
   Form,
   FormItem,
   Row,
+  Col,
   CollapseTransition
 ];
 
@@ -87,7 +89,8 @@ module.exports = {
   Input,
   Form,
   FormItem,
-  Row
+  Row,
+  Col
 };
 
 module.exports.default = module.exports;
