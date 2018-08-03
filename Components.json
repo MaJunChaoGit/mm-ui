@@ -12,5 +12,6 @@
   "checkbox-group" : "packages/checkbox-group/index.js",
   "input": "packages/input/index.js",
   "form": "packages/form/index.js",
-  "form-item": "packages/form-item/index.js"
+  "form-item": "packages/form-item/index.js",
+  "row": "packages/row/index.js"
 }

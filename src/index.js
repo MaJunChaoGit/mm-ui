@@ -14,6 +14,7 @@ import CheckboxGroup from '../packages/checkbox-group/index.js';
 import Input from '../packages/input/index.js';
 import Form from '../packages/form/index.js';
 import FormItem from '../packages/form-item/index.js';
+import Row from '../packages/row/index.js';
 // import locale from 'element-ui/src/locale';
 import CollapseTransition from 'element-ui/src/transitions/collapse-transition';
 
@@ -32,6 +33,7 @@ const components = [
   Input,
   Form,
   FormItem,
+  Row,
   CollapseTransition
 ];
 
@@ -84,7 +86,8 @@ module.exports = {
   CheckboxGroup,
   Input,
   Form,
-  FormItem
+  FormItem,
+  Row
 };
 
 module.exports.default = module.exports;
