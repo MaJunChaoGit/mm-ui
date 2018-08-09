@@ -47,7 +47,7 @@
         :aria-label="label"
       >
       <!-- 前置内容 -->
-      <span class="el-input__prefix" v-if="$slots.prefix || prefixIcon">
+      <span class="el-input__prefix" v-if="$slots.prefix || prefixIcon" :style="prefixOffset">
         <slot name="prefix"></slot>
         <i class="el-input__icon"
            v-if="prefixIcon"
@@ -56,23 +56,26 @@
       </span>
       <!-- 后置内容 -->
       <span class="el-input__suffix"
-        v-if="$slots.suffix || suffixIcon || showClear"
-      >
-      <span class="el-input__suffix-inner">
-        <template v-if="!showClear">
-          <slot name="suffix"></slot>
-          <i class="el-input__icon"
-             v-if="suffixIcon"
-             :class="suffixIcon">
-          </i>
-        </template>
-        <i
-          v-else
-          class="el-input__icon el-icon-circle-close el-input__clear"
-          @click="clear"
-        ></i>
-      </span>
-        
+        v-if="$slots.suffix || suffixIcon || showClear || validateState && needStatusIcon"
+        :style="suffixOffset">
+        <span class="el-input__suffix-inner">
+          <template v-if="!showClear">
+            <slot name="suffix"></slot>
+            <i class="el-input__icon"
+               v-if="suffixIcon"
+               :class="suffixIcon">
+            </i>
+          </template>
+          <i
+            v-else
+            class="el-input__icon el-icon-circle-close el-input__clear"
+            @click="clear"
+          ></i>
+        </span>
+        <i class="el-input__icon"
+          v-if="validateState"
+          :class="['el-input__validateIcon', validateIcon]">
+        </i>
       </span>
       <!-- 后置元素 -->
       <div class="el-input-group__append" v-if="$slots.append">
@@ -95,12 +98,15 @@
       @focus="handleFocus"
       @blur="handleBlur"
       :aria-label="label"
-    ></textarea>
+    >
+    </textarea>
   </div>
 </template>
 <script>
   import Emitter from 'element-ui/src/mixins/emitter';
+
   import { isKorean } from 'element-ui/src/utils/shared';
+
   export default {
     name: 'ElInput',
 
@@ -112,7 +118,6 @@
       elForm: {
         default: ''
       },
-
       elFormItem: {
         default: ''
       }
@@ -130,24 +135,6 @@
       };
     },
 
-    computed: {
-      _elFormItemSize() {
-        return (this.elFormItem || {}).elFormItemSize;
-      },
-      inputSize() {
-        return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
-      },
-      inputDisabled() {
-        return this.disabled || (this.elForm || {}).disabled;
-      },
-      showClear() {
-        return this.clearable &&
-          !this.disabled &&
-          !this.readonly &&
-          this.currentValue !== '' &&
-          (this.focused || this.hovering);
-      }
-    },
     props: {
       value: [String, Number],
       size: String,
@@ -157,7 +144,7 @@
         type: String,
         default: 'text'
       },
-      autosize: { //
+      autosize: {
         type: [Boolean, Object],
         default: false
       },
@@ -167,10 +154,51 @@
       },
       suffixIcon: String,
       prefixIcon: String,
-      label: String, //
+      label: String,
       clearable: Boolean,
-      tabindex: String //
+      tabindex: String
     },
+    computed: {
+      _elFormItemSize() {
+        return (this.elFormItem || {}).elFormItemSize;
+      },
+      validateState() {
+        return this.elFormItem ? this.elFormItem.validateState : '';
+      },
+      needStatusIcon() {
+        return this.elForm ? this.elForm.statusIcon : false;
+      },
+      validateIcon() {
+        return {
+          validating: 'el-icon-loading',
+          success: 'el-icon-circle-check',
+          error: 'el-icon-circle-close'
+        }[this.validateState];
+      },
+      inputSize() {
+        return this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
+      },
+      inputDisabled() {
+        return this.disabled || (this.elForm || {}).disabled;
+      },
+      isGroup() {
+        return this.$slots.prepend || this.$slots.append;
+      },
+      showClear() {
+        return this.clearable &&
+          !this.disabled &&
+          !this.readonly &&
+          this.currentValue !== '' &&
+          (this.focused || this.hovering);
+      }
+    },
+
+    watch: {
+      'value'(val) {
+        this.setCurrentValue(val);
+      }
+    },
+
     methods: {
       handleChange(event) {
         this.$emit('change', event.target.value);
@@ -222,11 +250,6 @@
             this.valueBeforeComposition = text;
           }
         }
-      }
-    },
-    watch: {
-      value(val) {
-        this.setCurrentValue(val);
       }
     }
   };
