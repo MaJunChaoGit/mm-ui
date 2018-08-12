@@ -49,7 +49,7 @@ tileset.style = new Cesium.Cesium3DTileStyle({
 });
    
 viewer.scene.primitives.add(tileset);
-
+jaugyabg
 // HTML overlay for showing feature name on mouseover
 var nameOverlay = document.createElement('div');
 viewer.container.appendChild(nameOverlay);
