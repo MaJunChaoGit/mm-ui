@@ -1,11 +1,11 @@
 ### Element-ui源码学习系列三——build:theme
 
-shell命令如下,我们还是一步一步来分析每个命令是发挥什么作用的
+shell命令如下,我们还是一步一步来分析每个命令是发挥什么作用的 
 
 ```json
 "build:theme": 
-"node build/bin/gen-cssfile && 
- gulp build --gulpfile packages/theme-chalk/gulpfile.js && 
+"node build/bin/gen-cssfile &&
+ gulp build --gulpfile packages/theme-chalk/gulpfile.js &&
  cp-cli packages/theme-chalk/lib lib/theme-chalk"
 ```
 
